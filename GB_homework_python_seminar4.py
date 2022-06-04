@@ -81,6 +81,7 @@ print("Ответ:", res_list)
 используйте пробел.
 '''
 
+'''
 print("Найдём в строке большее и меньшее число")
 string_input = input("Введите целые числа разделяя их пробелом:\n")
 
@@ -108,9 +109,85 @@ def find_num_min_max(arg_string):
 
 res_min, res_max = find_num_min_max(string_input)
 print(f"Ответ:\nменьшее число {res_min} большее число {res_max}")
+'''
 
 '''
 Задача 4.
 Задайте два целых числа. Напишите программу, которая найдёт 
 НОК (наименьшее общее кратное) этих двух чисел.
 '''
+
+print("Найдём наименьшее общее кратное двух чисел")
+num1 = int(input("Введите первое положительное целое число: "))
+num2 = int(input("Введите второе положительное целое число: "))
+
+def decompose_into_prime_factors(arg_num):
+    """
+    В этой функции раскладываем число на простые множители и
+    возвращаем список из них
+    """
+    arg_num = abs(arg_num)
+    if arg_num == 0 or arg_num == 1: return [arg_num]
+    res_list = []
+    while arg_num != 1:
+        count = 2
+        while arg_num % count != 0: count += 1
+        res_list.append(count)
+        arg_num //= count
+    return res_list
+
+def comparing_lists(arg_list1, arg_list2):
+    """
+    В этой функции добовляем в первый список элементы второго,
+    которые не пересекают первый
+    """
+    if arg_list1 == 0 or arg_list2 == 0: return 0
+    res_list = arg_list1
+    for char in arg_list1:
+        for c in arg_list2:
+            if char == c:
+                arg_list2.remove(c)
+                continue
+    res_list += arg_list2
+    return res_list
+
+def find_smallest_common_multiple(combined_list):
+    """
+    В этой функции находим произведение элементов списка
+    """
+    if combined_list == 0: return 0
+    res = 1
+    for c in combined_list:
+        res *= c
+    return res
+
+def checking_result(arg_num1, arg_num2, result):
+    """
+    В этой функции проверяем правельность решения
+    """
+    if result == 0: return False
+    if result % arg_num1 == 0 and result % arg_num2 == 0:
+        return True
+    else:
+        return False
+
+list1 = decompose_into_prime_factors(num1)
+list2 = decompose_into_prime_factors(num2)
+
+print(f"Число {num1} разложенное на простые множители:\n{list1}")
+print(f"Число {num2} разложенное на простые множители:\n{list2}")
+
+res_comparing_lists = comparing_lists(list1, list2)
+
+print("Общие множители:", res_comparing_lists)
+
+smallest_common_multiple = find_smallest_common_multiple(
+                          res_comparing_lists)
+
+if num1 < 0 or num2 < 0:
+    print("Все введённые отрецательные числа при расчётах менялись "
+          "на положительные")
+if checking_result(num1, num2, smallest_common_multiple):
+    print("Наименьшее общее кратное:", smallest_common_multiple)
+else:
+    print("Ошибка")
